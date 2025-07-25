@@ -1,4 +1,4 @@
-console.log("✅ authRoutes loaded");
+
 
 const express = require('express');
 const router = express.Router();
