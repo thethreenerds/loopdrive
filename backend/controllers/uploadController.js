@@ -2,7 +2,7 @@ const { saveSample } = require('../models/sampleModel');
 
 exports.handleUpload = async (req, res) => {
     try {
-        const { genre, bpm, sample_key, is_public } = req.body;
+        const { tags, genre, bpm, sample_key, is_public } = req.body;
         const file = req.file;
 
         if(!file) {
@@ -11,13 +11,14 @@ exports.handleUpload = async (req, res) => {
 
         const sample = {
             user_id: req.user.id, 
-            original_name: file.original_name,
+            original_name: file.originalname,
             filename: file.filename,
             filepath: file.path,
-            genre: tags || null,
+            tags: tags || null,
+            genre: genre || null,
             bpm: bpm || null,
-            sample_key: key || null,
-            is_public: 0
+            sample_key: sample_key || null,
+            is_public: is_public === '1' ? 1 : 0
         };
 
         await saveSample(sample);

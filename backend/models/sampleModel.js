@@ -2,10 +2,11 @@ const db = require('../config/db');
 
 const saveSample = async (sample) => {
     const {
-        userId,
+        user_id,
         original_name,
         filename, 
         filepath,
+        tags,
         genre, 
         bpm,
         sample_key,
@@ -14,20 +15,21 @@ const saveSample = async (sample) => {
 
     const query = `
         INSERT INTO samples
-        (user_id, original_name, filename, filepath, genre, bpm, sample_key, is_public)
-        VALUES (?,?,?,?,?,?,?,?)
+        (user_id, original_name, filename, filepath, tags, genre, bpm, sample_key, is_public)
+        VALUES (?,?,?,?,?,?,?,?,?)
     `
     ;
 
     await db.query(query, [
-        userId,
+        user_id,
         original_name,
         filename,
         filepath,
-        genre || null, 
-        bpm || null,
-        sample_key || null,
-        is_public ? 1 : 0,
+        tags,
+        genre, 
+        bpm,
+        sample_key,
+        is_public
     ]);
 }
 
