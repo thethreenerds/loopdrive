@@ -28,8 +28,11 @@ export default function UploadSample() {
         });
 
         try {
+            const token = localStorage.getItem("token");
             await API.post("/uploads/upload", data, {
-                headers: { "Content-Type": "multipart/form-data" }
+                headers: { "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                 }
             });
             alert("Upload Successful");
 
