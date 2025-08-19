@@ -45,6 +45,15 @@ export default function UploadSample() {
     return (
         <form onSubmit={handleSubmit}>
             <input type="file" accept="audio/*" onChange={handleFileChange} required/>
+            
+            {/* Preview before upload */}
+            {file && (
+                <div style ={{marginTop: "1rem" }}>
+                    <p>Preview:</p>
+                    <audio controls src ={URL.createObjectURL(file)} />
+                </div>
+            )}
+
             <input name="tags" placeholder="Tags" onChange={handleChange} />
             <input name="genre" placeholder="Genre" onChange={handleChange} />
             <input name="bpm" placeholder="BPM" type="number" onChange={handleChange} />
