@@ -29,3 +29,16 @@ exports.handleUpload = async (req, res) => {
         res.status(500).json({ message: 'Upload failed', error: err.message});
     }
 };
+
+exports.getMyUploads = (req, res) => {
+    const userId = req.user.id;
+    const sql = "SELECT id, file_url, tags, genre, bpm, sample_key, is_public, created_at FROM uploads WHERE user_id = ?";
+
+    db.query(sql, [userId], (err, results) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).json({ error: "Failed to fetch uploads"});
+        }
+        res.json(results);
+    })
+}
