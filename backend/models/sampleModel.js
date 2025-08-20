@@ -33,14 +33,15 @@ const saveSample = async (sample) => {
     ]);
 }
 
-const getSamplesByUser = async (userId) => {
-    const query = `
-        SELECT id, original_name, filename, filepath, tags, genre, bpm, sample_key, is_public, created_at
-        FROM samples
-        WHERE user_id = ?
-    `;
-    const [results] = await db.query(query, [userId]);
-    return results;
+const getSamplesByUser = async (user_id) => {
+  const [rows] = await db.query(
+    `SELECT id, original_name, filename, filepath, tags, genre, bpm, sample_key, is_public, created_at
+     FROM samples
+     WHERE user_id = ?
+     ORDER BY created_at DESC`,
+    [user_id]
+  );
+  return rows;
 };
 
 module.exports = { saveSample, getSamplesByUser };

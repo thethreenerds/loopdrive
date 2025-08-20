@@ -32,11 +32,20 @@ exports.handleUpload = async (req, res) => {
 
 exports.getMyUploads = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const uploads = await getSamplesByUser(userId);
-        res.json(uploads);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to fetch uploads" });
+        const rows = await getSamplesByUser(req.user.id);
+        const base = `${req.protocol}://${req.get('host')}`;
+
+        //read to go url for each row
+
+        const data = rows.map(r => ({
+            ...r,
+            file_url: `${base}/uploads/${r.filename}`
+        }));
+
+        res.json(data);
+    }catch (err) {
+        console.error('Fetch uploads error:', err);
+        res.status(500).json({ message: 'Failed to fetch uploads', err});
+        
     }
 };
