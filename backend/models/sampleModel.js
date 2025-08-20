@@ -33,4 +33,14 @@ const saveSample = async (sample) => {
     ]);
 }
 
-module.exports = { saveSample };
+const getSamplesByUser = async (userId) => {
+    const query = `
+        SELECT id, original_name, filename, filepath, tags, genre, bpm, sample_key, is_public, created_at
+        FROM samples
+        WHERE user_id = ?
+    `;
+    const [results] = await db.query(query, [userId]);
+    return results;
+};
+
+module.exports = { saveSample, getSamplesByUser };

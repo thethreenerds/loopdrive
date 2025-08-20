@@ -1,4 +1,4 @@
-const { saveSample } = require('../models/sampleModel');
+const { saveSample, getSamplesByUser } = require('../models/sampleModel');
 
 exports.handleUpload = async (req, res) => {
     try {
@@ -30,15 +30,13 @@ exports.handleUpload = async (req, res) => {
     }
 };
 
-exports.getMyUploads = (req, res) => {
-    const userId = req.user.id;
-    const sql = "SELECT id, file_url, tags, genre, bpm, sample_key, is_public, created_at FROM uploads WHERE user_id = ?";
-
-    db.query(sql, [userId], (err, results) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).json({ error: "Failed to fetch uploads"});
-        }
-        res.json(results);
-    })
-}
+exports.getMyUploads = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const uploads = await getSamplesByUser(userId);
+        res.json(uploads);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch uploads" });
+    }
+};
