@@ -1,6 +1,6 @@
 import React from "react";
 import UploadSample from "../components/UploadSample";
-import myUploads from "../components/MyUploads";
+import MyUploads from "../components/MyUploads";
 
 function Dashboard(){
     return (
