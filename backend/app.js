@@ -10,7 +10,7 @@ const cors = require('cors');
 app.use(express.json());
 
 //adding line to serve uploaded files
-app.use('/uploads', express.static(path,join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors({ origin: 'http://localhost:3000'}));
 app.use('/api/samples', sampleRoutes);
 app.use('/api/users', userRoutes);

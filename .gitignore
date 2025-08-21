@@ -7,9 +7,10 @@ Thumbs.db
 *.env
 .env.local
 
-# Ignore lock files
+# Ignore lock files everywhere
 package-lock.json
-yarn.lock
+frontend/package-lock.json
+backend/package-lock.json
 
 
 # npm
