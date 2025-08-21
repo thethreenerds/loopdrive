@@ -7,7 +7,7 @@ function Dashboard(){
         <div>
             <h1>Dashboard</h1>
             <UploadSample />
-            <myUploads />
+            <MyUploads />
         </div>
     )
 }

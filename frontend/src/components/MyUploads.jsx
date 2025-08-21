@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
 
-export default function myUploads() {
+export default function MyUploads() {
     const [uploads, setUploads] = useState([]);
 
     useEffect(() => {
