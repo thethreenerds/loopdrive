@@ -7,6 +7,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </Router>
     );
