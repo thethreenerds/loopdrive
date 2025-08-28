@@ -1,21 +1,6 @@
 import React, { useEffect, useState } from "react";
-import API from "../api";
 
-export default function MyUploads() {
-    const [uploads, setUploads] = useState([]);
-
-    useEffect(() => {
-        const fetchUploads = async () => {
-            try {
-                const res = await API.get("/uploads/my-uploads");
-                setUploads(res.data);
-            } catch (err) {
-                console.error("Failed to fetch uploads", err);
-            }
-        };
-
-        fetchUploads();
-    }, []);
+export default function MyUploads({ uploads, loading }) {
 
      return (
     <div>
