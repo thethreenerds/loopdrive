@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import API from "../api";
 
-export default function UploadSample() {
+export default function UploadSample({ onUploadSuccess }) {
     const [file, setFile] = useState(null);
     const [formData, setFormData] = useState({
         tags: "",
@@ -35,6 +35,22 @@ export default function UploadSample() {
                  }
             });
             alert("Upload Successful");
+
+            //trigger refresh of dashboard
+            if (onUploadSuccess) {
+                onUploadSuccess();
+            }
+
+            //reset form
+
+            setFile(null);
+            setFormData({
+                tags: "",
+                genre: "",
+                bpm: "",
+                sample_key: "",
+                is_public: false,
+            });
 
         }catch (err) {
             console.error(err);
