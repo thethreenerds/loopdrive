@@ -11,7 +11,11 @@ export default function MyUploads({ uploads, loading }) {
         <ul>
           {uploads.map((sample) => (
             <li key={sample.id} style={{ marginBottom: "1rem" }}>
-              <p>{sample.original_name}</p>
+              <p>Name: {sample.original_name}</p>
+              <p>Genre: {sample.genre || "N/A"}</p>
+              <p>BPM: {sample.BPM || "N/A"}</p>
+              <p>Key: {sample.sample_key || "N/A"}</p>
+              <p>Tags: {sample.tags || "N/A"}</p>
               <audio controls src={sample.file_url} />
             </li>
           ))}
