@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UploadSample from "../components/UploadSample";
 import MyUploads from "../components/MyUploads";
 import API from "../api";
+import LogoutButton from "../components/LogoutButton";
 
 function Dashboard(){
 
@@ -27,6 +28,7 @@ function Dashboard(){
     return (
         <div>
             <h1>Dashboard</h1>
+            <LogoutButton />
             <UploadSample onUploadSuccess={fetchUploads} />
             <MyUploads uploads={uploads} loading={loading} />
         </div>
