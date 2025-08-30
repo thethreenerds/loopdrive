@@ -48,4 +48,31 @@ exports.getMyUploads = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch uploads', err});
         
     }
+
+    exports.searchSamples = async (req, res) => {
+        try {
+
+            const { genre, bpm, sample_key, tags } = req.query;
+
+            const filters = {};
+            if (genre) filters.genre = genre;
+            if (bpm) filters.bpm = bpm;
+            if (sample_key) filters.sample_key = sample_key;
+            if (tags) filters.tags = tags;
+
+            const rows = await getSamplesByUser(req.user.id, filters);
+
+            const base = `${req.protocol}://${req.get('host')}`;
+
+            const data = rows.map(r => ({
+                ...r,
+                file_url: `${base}/uploads/${r.filename}`,
+            }));
+
+            res.json(data);
+        } catch (err) {
+            console.error("Search samples error:", err);
+            res.status(500).json({message: "Failed to search samples", error: err.message});
+        }
+    }
 };
