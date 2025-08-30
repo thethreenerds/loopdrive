@@ -48,6 +48,7 @@ exports.getMyUploads = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch uploads', err});
         
     }
+};
 
     exports.searchSamples = async (req, res) => {
         try {
@@ -74,5 +75,6 @@ exports.getMyUploads = async (req, res) => {
             console.error("Search samples error:", err);
             res.status(500).json({message: "Failed to search samples", error: err.message});
         }
-    }
-};
+    };
+
+

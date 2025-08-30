@@ -46,18 +46,18 @@ const getSamplesByUser = async (user_id, filters = {}) => {
   //dynamically add filters if they exist
 
   if(filters.genre) {
-    query += 'AND genre =?';
+    query += ' AND genre =?';
     params.push(filters.genre);
   }
 
   if(filters.bpm) {
-    query += 'AND bpm =?';
+    query += ' AND bpm =?';
     params.push(filters.bpm);
   }
 
   
   if(filters.sample_key) {
-    query += 'AND sample_key =?';
+    query += ' AND sample_key =?';
     params.push(filters.sample_key);
   }
   
@@ -68,7 +68,7 @@ const getSamplesByUser = async (user_id, filters = {}) => {
   }
 
   query += 'ORDER BY created_at DESC';
-  const [rpws] = await db.query(query, params);
+  const [rows] = await db.query(query, params);
   return rows;
 };
 
