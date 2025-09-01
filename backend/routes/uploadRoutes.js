@@ -7,4 +7,5 @@ const { handleUpload, getMyUploads, searchSamples } = require('../controllers/up
 router.post('/upload', verifyToken, upload.single('audio'), handleUpload);
 router.get('/my-uploads', verifyToken, getMyUploads);
 router.get('/search', verifyToken, searchSamples);
+router.put('/:id', verifyToken, updateSample);
 module.exports = router;

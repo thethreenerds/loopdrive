@@ -72,4 +72,31 @@ const getSamplesByUser = async (user_id, filters = {}) => {
   return rows;
 };
 
-module.exports = { saveSample, getSamplesByUser };
+
+
+const updateSampleById = async (id, userId, fields) => {
+  const allowed = ['genre', 'bpm', 'sample_key', 'tags', 'is_public'];
+  const setClause = [];
+  const params = [];
+
+  for (let key of allowed){
+    if(fields[key] !== undefined) {
+      setClause.push(`${key} = ?`);
+      params.push(fields[key]);
+    }
+  }
+
+  if (!setClause.length) return false;
+  params.push(id, userId);
+
+  const [result] = await db.query(
+    
+    `UPDATE samples SET ${setClause.join(', ')} WHERE id = ? AND user_id = ?`,
+    params
+
+  );
+
+  return result.affectedRows > 0;
+}
+
+module.exports = { saveSample, getSamplesByUser, updateSampleById };

@@ -1,4 +1,5 @@
 const { saveSample, getSamplesByUser } = require('../models/sampleModel');
+const { updateSampleById} = require('../models/sampleModel');
 
 exports.handleUpload = async (req, res) => {
     try {
@@ -76,5 +77,23 @@ exports.getMyUploads = async (req, res) => {
             res.status(500).json({message: "Failed to search samples", error: err.message});
         }
     };
+
+exports.updateSample = async (req, res) => {
+    try {
+        const sampleId = req.params.id;
+        const userId = req.user.id;
+        const { genre, bpm, sample_key, tags, is_public} = req.body;
+
+        const updated = await updateSampleById(sampleId, userId, {genre, bpm, sample_key, tags, is_public});
+
+        if(!updated) return res.status(404).json({ message: 'Sample not found'});
+
+
+    }catch (err) {
+        console.error('Update sample error:', err);
+        res.status(500).json({message: 'Failed to update sample', error: err.message });
+    }
+
+}
 
 
