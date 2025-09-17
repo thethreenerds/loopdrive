@@ -99,4 +99,13 @@ const updateSampleById = async (id, userId, fields) => {
   return result.affectedRows > 0;
 }
 
-module.exports = { saveSample, getSamplesByUser, updateSampleById };
+
+const deleteSampleById = async (id, userId) => {
+  const [result] = await db.query(
+    "DELETE FROM samples WHERE id = ? AND user_id = ?", 
+    [id, userId]
+  );
+  return result.affectedRows > 0;
+};
+
+module.exports = { saveSample, getSamplesByUser, updateSampleById, deleteSampleById };

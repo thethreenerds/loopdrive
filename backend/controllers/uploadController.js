@@ -102,4 +102,23 @@ exports.updateSample = async (req, res) => {
 
 }
 
+const { deleteSampleById } = require('../models/sampleModel');
 
+exports.deleteSample = async (req, res) => {
+    try {
+        const sampleId = req.params.id;
+        const userId = req.user.id;
+
+        const deleted = await deleteSampleById(sampleId, userId);
+
+        if(!deleted){
+            return res.status(404).json({ message: "Sample not found" });
+
+        }
+        res.json({message: "Sample deleted successfully"});
+
+        }catch(err){
+            console.error("Delete sample error:", err);
+            res.status(500).json({message: "Failed to delete sample", error: err.message });
+        }
+};
