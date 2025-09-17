@@ -5,6 +5,7 @@ export default function MyUploads({ uploads, loading, onUpdate }) {
 
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const startEditing = (sample) => {
     setEditingId(sample.id);
@@ -37,27 +38,45 @@ export default function MyUploads({ uploads, loading, onUpdate }) {
     }
   };
 
-  const deleteSample = async(id) => {
+const toggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
+    );
+  };
+
+  const deleteSelected = async () => {
     try {
-
-      await API.delete(`/uploads/${id}`);
+      await API.delete("/uploads/batch", { data: {ids: selectedIds }});
+      setSelectedIds([]);
       onUpdate();
-
-    } catch (err) {
-      console.error("Failed to delete sample")
+    }catch(err){
+      console.error("Failed to delete samples", err);
     }
+  };
 
-  }
+
 
   return (
     <div>
       <h2>My Uploads</h2>
+      {selectedIds.length > 0 && (
+        <button onClick={deleteSelected}>
+          Delete Selected ({selectedIds.length})
+        </button>
+      )}
       {uploads.length === 0 ? (
         <p>No uploads yet.</p>
       ) : (
         <ul>
           {uploads.map((sample) => (
             <li key={sample.id} style={{ marginBottom: "1rem" }}>
+              <input 
+              type="checkbox"
+              checked={selectedIds.includes(sample.id)}
+              onChange={() => toggleSelect(sample.id)}
+              style={{marginRight: "0.5rem" }}
+              />
+              
               {editingId === sample.id ? (
                 //edit form
                 <div>
