@@ -25,8 +25,13 @@ export default function MyUploads({ uploads, loading, onUpdate }) {
   const saveEdit = async (id) => {
     try {
       await API.put(`/uploads/${id}`, editData);
+      if(onUpdate){
+        onUpdate((prev) =>
+          prev.map((s) => (s.id === id ? { ...s, ...editData } : s))
+        
+        );
+      }
       setEditingId(null);
-      onUpdate();
     } catch (err) {
       console.error("Failed to update sample", err);
     }

@@ -62,7 +62,7 @@ function Dashboard(){
                 <button onClick={fetchFilteredUploads}>Filter</button>
             </div>
             <UploadSample onUploadSuccess={fetchUploads} />
-            <MyUploads uploads={uploads} loading={loading} />
+            <MyUploads uploads={uploads} loading={loading} onUpdate={setUploads} />
         </div>
     )
 }
