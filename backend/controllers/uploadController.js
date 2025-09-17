@@ -102,23 +102,24 @@ exports.updateSample = async (req, res) => {
 
 }
 
-const { deleteSampleById } = require('../models/sampleModel');
+const { deleteSamplesByIds } = require('../models/sampleModel');
 
-exports.deleteSample = async (req, res) => {
+exports.deleteSamples = async (req, res) => {
     try {
-        const sampleId = req.params.id;
         const userId = req.user.id;
+        const {ids} = req.body;
 
-        const deleted = await deleteSampleById(sampleId, userId);
-
-        if(!deleted){
-            return res.status(404).json({ message: "Sample not found" });
-
+        if(!ids || !Array.isArray(ids) || ids.length ===0) {
+            return res.status(400).json({message: "No ID's Provided"});
         }
-        res.json({message: "Sample deleted successfully"});
+
+        const deleted = await deleteSamplesByIds(ids, userId);
+
+
+        res.json({message: "Sample deleted ", deletedCount: deleted});
 
         }catch(err){
-            console.error("Delete sample error:", err);
-            res.status(500).json({message: "Failed to delete sample", error: err.message });
+            console.error("Batch delete error:", err);
+            res.status(500).json({message: "Failed to delete samples", error: err.message });
         }
 };

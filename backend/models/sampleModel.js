@@ -100,12 +100,16 @@ const updateSampleById = async (id, userId, fields) => {
 }
 
 
-const deleteSampleById = async (id, userId) => {
+const deleteSamplesByIds = async (ids, userId) => {
+
+  const placeholders = ids.map(() => "?").join(",");
+  const params = [...ids, userId];
+
   const [result] = await db.query(
-    "DELETE FROM samples WHERE id = ? AND user_id = ?", 
-    [id, userId]
+     `DELETE FROM samples WHERE id IN (${placeholders}) AND user_id = ?`,
+    params
   );
-  return result.affectedRows > 0;
+  return result.affectedRows;
 };
 
-module.exports = { saveSample, getSamplesByUser, updateSampleById, deleteSampleById };
+module.exports = { saveSample, getSamplesByUser, updateSampleById, deleteSamplesByIds };

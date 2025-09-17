@@ -37,6 +37,18 @@ export default function MyUploads({ uploads, loading, onUpdate }) {
     }
   };
 
+  const deleteSample = async(id) => {
+    try {
+
+      await API.delete(`/uploads/${id}`);
+      onUpdate();
+
+    } catch (err) {
+      console.error("Failed to delete sample")
+    }
+
+  }
+
   return (
     <div>
       <h2>My Uploads</h2>
