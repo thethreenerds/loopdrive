@@ -86,7 +86,13 @@ exports.updateSample = async (req, res) => {
 
         const updated = await updateSampleById(sampleId, userId, {genre, bpm, sample_key, tags, is_public});
 
-        if(!updated) return res.status(404).json({ message: 'Sample not found'});
+        if(!updated) {
+
+            return res.status(404).json({ message: 'Sample not found'});
+
+        } 
+
+        res.json({ message: 'Sample updated successfully'});
 
 
     }catch (err) {
