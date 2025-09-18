@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import API from "../api";
 
-export default function MyUploads({ uploads, loading, onUpdate }) {
+export default function MyUploads({ uploads = [], loading, onUpdate }) {
 
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -48,7 +48,9 @@ const toggleSelect = (id) => {
     try {
       await API.delete("/uploads/batch", { data: {ids: selectedIds }});
       setSelectedIds([]);
-      onUpdate();
+      if(onUpdate) {
+        onUpdate((prev) => prev.filter((s) => !selectedIds.includes(s.id)));
+      }
     }catch(err){
       console.error("Failed to delete samples", err);
     }

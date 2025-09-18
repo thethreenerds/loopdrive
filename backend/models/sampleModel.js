@@ -101,6 +101,7 @@ const updateSampleById = async (id, userId, fields) => {
 
 
 const deleteSamplesByIds = async (ids, userId) => {
+  if(!ids.length) return 0;
 
   const placeholders = ids.map(() => "?").join(",");
   const params = [...ids, userId];
