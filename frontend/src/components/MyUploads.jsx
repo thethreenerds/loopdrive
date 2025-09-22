@@ -73,7 +73,12 @@ export default function MyUploads({ uploads = [], loading, onUpdate }) {
         <Row xs={1} md={2} lg={3} className="g-3">
           {uploads.map((sample) => (
             <Col key={sample.id}>
-              <Card>
+              <Card
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData("audioUrl", sample.file_url);
+                e.dataTransfer.effectAllowed = "copy";
+              }}>
                 <Card.Body>
                   <Form.Check
                     type="checkbox"

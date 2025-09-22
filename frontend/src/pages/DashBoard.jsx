@@ -35,17 +35,30 @@ function Dashboard() {
       </Row>
 
       <Row className="mb-3">
-        <Form className="d-flex gap-2">
-          <Form.Control name="genre" placeholder="Genre" onChange={handleFilterChange} />
-          <Form.Control name="bpm" placeholder="BPM" onChange={handleFilterChange} />
-          <Form.Control name="sample_key" placeholder="Key" onChange={handleFilterChange} />
-          <Form.Control name="tags" placeholder="Tags" onChange={handleFilterChange} />
-          <Button onClick={fetchFilteredUploads}>Filter</Button>
-        </Form>
-      </Row>
-
-      <Row className="mb-3">
-        <UploadSample onUploadSuccess={fetchUploads} />
+        <Col md={6}>
+          <Card
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.8)", 
+              backdropFilter: "blur(5px)",                
+              borderRadius: "0.75rem",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)", 
+            }}
+          >
+            <h2 className="text-center">Search/Filtering</h2>
+            <Card.Body>
+              <Form className="d-flex gap-2 flex-wrap">
+                <Form.Control name="genre" placeholder="Genre" onChange={handleFilterChange} />
+                <Form.Control name="bpm" placeholder="BPM" onChange={handleFilterChange} />
+                <Form.Control name="sample_key" placeholder="Key" onChange={handleFilterChange} />
+                <Form.Control name="tags" placeholder="Tags" onChange={handleFilterChange} />
+                <Button onClick={fetchFilteredUploads}>Filter</Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+          <Col md={6}>
+           <UploadSample onUploadSuccess={fetchUploads} />
+          </Col>
       </Row>
 
       <Row>
