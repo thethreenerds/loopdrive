@@ -48,24 +48,10 @@ function Dashboard() {
         <UploadSample onUploadSuccess={fetchUploads} />
       </Row>
 
-      <Row xs={1} md={2} lg={3} className="g-3">
-        {uploads.map((sample) => (
-          <Col key={sample.id}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{sample.original_name}</Card.Title>
-                <Card.Text>
-                  Genre: {sample.genre || "N/A"} <br />
-                  BPM: {sample.bpm || "N/A"} <br />
-                  Key: {sample.sample_key || "N/A"} <br />
-                  Tags: {sample.tags || "N/A"}
-                </Card.Text>
-                <audio controls src={sample.file_url} />
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+      <Row>
+        <MyUploads uploads={uploads} onUpdate={setUploads} />
       </Row>
+
     </Container>
   );
 }

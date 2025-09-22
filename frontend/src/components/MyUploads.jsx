@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import API from "../api";
 
 export default function MyUploads({ uploads = [], loading, onUpdate }) {
-
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
   const [selectedIds, setSelectedIds] = useState([]);
@@ -14,22 +14,24 @@ export default function MyUploads({ uploads = [], loading, onUpdate }) {
       bpm: sample.bpm || "",
       sample_key: sample.sample_key || "",
       tags: sample.tags || "",
-      is_public: sample.is_public
+      is_public: sample.is_public,
     });
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked} = e.target;
-    setEditData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value}));
+    const { name, value, type, checked } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const saveEdit = async (id) => {
     try {
       await API.put(`/uploads/${id}`, editData);
-      if(onUpdate){
+      if (onUpdate) {
         onUpdate((prev) =>
           prev.map((s) => (s.id === id ? { ...s, ...editData } : s))
-        
         );
       }
       setEditingId(null);
@@ -38,7 +40,7 @@ export default function MyUploads({ uploads = [], loading, onUpdate }) {
     }
   };
 
-const toggleSelect = (id) => {
+  const toggleSelect = (id) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
     );
@@ -46,67 +48,120 @@ const toggleSelect = (id) => {
 
   const deleteSelected = async () => {
     try {
-      await API.delete("/uploads/batch", { data: {ids: selectedIds }});
+      await API.delete("/uploads/batch", { data: { ids: selectedIds } });
       setSelectedIds([]);
-      if(onUpdate) {
+      if (onUpdate) {
         onUpdate((prev) => prev.filter((s) => !selectedIds.includes(s.id)));
       }
-    }catch(err){
+    } catch (err) {
       console.error("Failed to delete samples", err);
     }
   };
-
-
 
   return (
     <div>
       <h2>My Uploads</h2>
       {selectedIds.length > 0 && (
-        <button onClick={deleteSelected}>
+        <Button variant="danger" className="mb-3" onClick={deleteSelected}>
           Delete Selected ({selectedIds.length})
-        </button>
+        </Button>
       )}
+
       {uploads.length === 0 ? (
         <p>No uploads yet.</p>
       ) : (
-        <ul>
+        <Row xs={1} md={2} lg={3} className="g-3">
           {uploads.map((sample) => (
-            <li key={sample.id} style={{ marginBottom: "1rem" }}>
-              <input 
-              type="checkbox"
-              checked={selectedIds.includes(sample.id)}
-              onChange={() => toggleSelect(sample.id)}
-              style={{marginRight: "0.5rem" }}
-              />
-              
-              {editingId === sample.id ? (
-                //edit form
-                <div>
-                  <input name="genre" value={editData.genre} onChange={handleChange} placeholder="Genre" />
-                  <input name="bpm" value={editData.bpm} onChange={handleChange} placeholder="BPM" />
-                  <input name="sample_key" value={editData.sample_key} onChange={handleChange} placeholder="Key" />
-                  <input name="tags" value={editData.tags} onChange={handleChange} placeholder="Tags" />
-                  <label>
-                    Public? <input type="checkbox" name="is_public" checked={editData.is_public} onChange={handleChange} />
-                  </label>
-                  <button onClick={() => saveEdit(sample.id)}>Save</button>
-                  <button onClick={() => setEditingId(null)}>Cancel</button>
-                </div>
-              ) : (
-                //existing read-only display + Edit button
-                <div>
-                  <p>Name: {sample.original_name}</p>
-                  <p>Genre: {sample.genre || "N/A"}</p>
-                  <p>BPM: {sample.bpm || "N/A"}</p>
-                  <p>Key: {sample.sample_key || "N/A"}</p>
-                  <p>Tags: {sample.tags || "N/A"}</p>
-                  <audio controls src={sample.file_url} />
-                  <button onClick={() => startEditing(sample)}>Edit</button>
-                </div>
-              )}
-            </li>
+            <Col key={sample.id}>
+              <Card>
+                <Card.Body>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedIds.includes(sample.id)}
+                    onChange={() => toggleSelect(sample.id)}
+                    className="mb-2"
+                  />
+
+                  {editingId === sample.id ? (
+                    <div>
+                      <Form.Control
+                        name="genre"
+                        value={editData.genre}
+                        onChange={handleChange}
+                        placeholder="Genre"
+                        className="mb-2"
+                      />
+                      <Form.Control
+                        name="bpm"
+                        value={editData.bpm}
+                        onChange={handleChange}
+                        placeholder="BPM"
+                        className="mb-2"
+                      />
+                      <Form.Control
+                        name="sample_key"
+                        value={editData.sample_key}
+                        onChange={handleChange}
+                        placeholder="Key"
+                        className="mb-2"
+                      />
+                      <Form.Control
+                        name="tags"
+                        value={editData.tags}
+                        onChange={handleChange}
+                        placeholder="Tags"
+                        className="mb-2"
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        name="is_public"
+                        label="Public?"
+                        checked={editData.is_public}
+                        onChange={handleChange}
+                        className="mb-2"
+                      />
+                      <Button
+                        size="sm"
+                        variant="success"
+                        onClick={() => saveEdit(sample.id)}
+                        className="me-2"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => setEditingId(null)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <Card.Title>{sample.original_name}</Card.Title>
+                      <Card.Text>
+                        Genre: {sample.genre || "N/A"} <br />
+                        BPM: {sample.bpm || "N/A"} <br />
+                        Key: {sample.sample_key || "N/A"} <br />
+                        Tags: {sample.tags || "N/A"}
+                      </Card.Text>
+                      <audio controls src={sample.file_url} className="w-100" />
+                      <div className="mt-2">
+                        <Button
+                          size="sm"
+                          variant="primary"
+                          onClick={() => startEditing(sample)}
+                        >
+                          Edit
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
           ))}
-        </ul>
+        </Row>
       )}
     </div>
   );
